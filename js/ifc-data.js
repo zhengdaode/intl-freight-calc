@@ -40,7 +40,8 @@ function ifcAddItems(items) {
             id: ifcGenerateId(), batchId: ifcCurrentBatchId,
             productName: item.productName || '', unitPrice: parseFloat(item.unitPrice) || 0,
             quantity: parseInt(item.quantity) || 1, unitWeight: parseFloat(item.unitWeight) || 0,
-            totalWeight: 0, avgIntlFee: 0, weightedIntlFee: 0, weightedTotalFee: 0
+            totalWeight: 0, avgIntlFee: 0, weightedIntlFee: 0, weightedTotalFee: 0,
+            _weightedManual: false
         });
     });
     ifcRecalcAll(); ifcSaveItems();
@@ -56,6 +57,7 @@ function ifcUpdateItem(itemId, field, value) {
         item.totalWeight = item.unitWeight * item.quantity;
     } else if (field === 'weightedIntlFee') {
         item.weightedIntlFee = parseFloat(value) || 0;
+        item._weightedManual = true;
     }
     item.weightedTotalFee = item.weightedIntlFee * item.quantity;
     ifcRecalcAll(); ifcSaveItems();
@@ -69,7 +71,7 @@ function ifcRecalcAll() {
     if (tareTotal > 0 && batch.targetAmount > 0) {
         ifcItems.forEach(function(item) {
             item.avgIntlFee = (batch.targetAmount / tareTotal) * item.unitWeight;
-            if (item.weightedIntlFee === 0 || Math.abs(item.weightedIntlFee - item.avgIntlFee) < 0.001) { item.weightedIntlFee = item.avgIntlFee; }
+            if (!item._weightedManual) { item.weightedIntlFee = item.avgIntlFee; }
             item.weightedTotalFee = item.weightedIntlFee * item.quantity;
         });
     }

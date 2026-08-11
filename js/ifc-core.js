@@ -59,6 +59,7 @@ function ifcGetGroupProducts() {
 // 初始化入口
 function ifcInit() {
     ifcLoadBatches();
+    if (ifcBatches.length > 0 && !ifcCurrentBatchId) { ifcSelectBatch(ifcBatches[0].id); }
     ifcRender();
 }
 
