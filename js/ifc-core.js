@@ -69,3 +69,26 @@ function ifcRender() {
     ifcRenderPanel();
     ifcRenderTable();
 }
+
+// Tab 切换：运费计算 / 国际排发表
+function ifcSwitchTab(tab) {
+    var calcTab = document.getElementById('ifc-tab-calc');
+    var scheduleTab = document.getElementById('ifc-tab-schedule');
+    var tableContainer = document.getElementById('ifcTableContainer');
+    var scheduleContainer = document.getElementById('ifcScheduleContainer');
+    var panel = document.getElementById('ifcPanel');
+
+    if (tab === 'calc') {
+        if (calcTab) calcTab.className = 'px-4 py-2 text-sm font-bold text-indigo-600 border-b-2 border-indigo-500 -mb-px bg-white';
+        if (scheduleTab) scheduleTab.className = 'px-4 py-2 text-sm text-gray-500 hover:text-indigo-500 -mb-px';
+        if (panel) panel.style.display = '';
+        if (tableContainer) tableContainer.classList.remove('hidden');
+        if (scheduleContainer) { scheduleContainer.classList.add('hidden'); scheduleContainer.innerHTML = ''; }
+    } else {
+        if (scheduleTab) scheduleTab.className = 'px-4 py-2 text-sm font-bold text-indigo-600 border-b-2 border-indigo-500 -mb-px bg-white';
+        if (calcTab) calcTab.className = 'px-4 py-2 text-sm text-gray-500 hover:text-indigo-500 -mb-px';
+        if (panel) panel.style.display = 'none';
+        if (tableContainer) tableContainer.classList.add('hidden');
+        if (scheduleContainer) { scheduleContainer.classList.remove('hidden'); ifcRenderSchedule(); }
+    }
+}
