@@ -27,3 +27,34 @@ function ifcExportCopy() {
     var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
     document.execCommand('copy'); document.body.removeChild(ta); ifcShowToast('表格已复制到剪贴板', 'success');
 }
+
+function ifcExportDataBackup() {
+    if (!ifcItems.length) { ifcShowToast('无数据可备份', 'warning'); return; }
+    var backup = {
+        version: '1.1.0',
+        exportedAt: new Date().toISOString(),
+        batchId: ifcCurrentBatchId || '',
+        batchName: ifcCurrentBatchId ? (typeof ifcGetBatchName === 'function' ? ifcGetBatchName(ifcCurrentBatchId) : '') : '',
+        items: ifcItems.map(function(item) {
+            return {
+                productName: item.productName,
+                unitPrice: item.unitPrice,
+                quantity: item.quantity,
+                unitWeight: item.unitWeight,
+                totalWeight: item.totalWeight,
+                avgIntlFee: item.avgIntlFee,
+                weightedIntlFee: item.weightedIntlFee,
+                weightedTotalFee: item.weightedTotalFee,
+                sourceId: item.sourceId || ''
+            };
+        })
+    };
+    var json = JSON.stringify(backup, null, 2);
+    var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '运费备份_' + (backup.batchName || backup.batchId || '当前批次') + '_' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    ifcShowToast('数据备份已下载（' + backup.items.length + ' 条商品）', 'success');
+}

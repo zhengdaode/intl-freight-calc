@@ -128,6 +128,7 @@ function ifcRenderSchedule() {
     html += '<div class="mt-3 flex gap-2">' +
         '<button onclick="ifcExportScheduleCSV()" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded text-xs hover:bg-gray-300">导出 CSV</button>' +
         '<button onclick="ifcExportScheduleCopy()" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded text-xs hover:bg-gray-300">复制表格</button>' +
+        '<button onclick="ifcExportScheduleImage()" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200">导出图片</button>' +
         '<span class="ml-auto text-xs text-gray-400 self-center">共 ' + cnList.length + ' 人 / ' + totalItems + ' 件</span>' +
     '</div>';
 
@@ -205,5 +206,21 @@ function ifcExportScheduleCopy() {
         ifcShowToast('已复制排发表（' + cnList.length + ' 人）', 'success');
     }).catch(function() {
         ifcShowToast('复制失败，请重试', 'error');
+    });
+}
+
+function ifcExportScheduleImage() {
+    var container = document.getElementById('ifcScheduleContainer');
+    if (!container || !container.innerHTML) { ifcShowToast('无排发表数据', 'warning'); return; }
+    if (typeof html2canvas === 'undefined') { ifcShowToast('html2canvas 未加载', 'error'); return; }
+
+    html2canvas(container, { backgroundColor: '#ffffff', scale: 2 }).then(function(canvas) {
+        var a = document.createElement('a');
+        a.download = '国际排发表_' + new Date().toISOString().slice(0, 10) + '.png';
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+        ifcShowToast('排发表图片已下载', 'success');
+    }).catch(function() {
+        ifcShowToast('导出图片失败', 'error');
     });
 }
