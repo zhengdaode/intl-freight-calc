@@ -58,7 +58,7 @@ function ifcRenderTable() {
         '<button onclick="ifcShowManualAdd()" class="px-3 py-1.5 bg-green-500 text-white rounded text-xs hover:bg-green-600">+ 手动录入</button>' +
         '<button onclick="ifcExportCSV()" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded text-xs hover:bg-gray-300">导出 CSV</button>' +
         '<button onclick="ifcExportCopy()" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded text-xs hover:bg-gray-300">复制表格</button>' +
-        '<button onclick="ifcExportDataBackup()" class="px-3 py-1.5 bg-green-100 text-green-700 rounded text-xs hover:bg-green-200">数据备份</button>' +
+        '<button onclick="ifcExportDataBackup()" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded text-xs hover:bg-gray-300">数据备份</button>' +
         '<span class="ml-auto text-xs text-gray-400 self-center">共 ' + ifcItems.length + ' 种商品</span>' +
     '</div>';
 
